@@ -14,8 +14,10 @@ import SideBar from './components/Layout/SideBar';
 import Home from './components/Home';
 
 import Customers from './components/Customer/Customers';
+ 
 import CreateCustomer from './components/Customer/Create';
 import UpdateCustomer from './components/Customer/Update';
+ 
 
 
 import './App.css';
