@@ -17,6 +17,13 @@ import Customers from './components/Customer/Customers';
 import Customer from './components/Customer/Customer';
 import CreateCustomer from './components/Customer/Create';
 import UpdateCustomer from './components/Customer/Update';
+
+import Slider from './components/Slider/Slider';
+
+
+import GoldRate from './components/Goldrate/Gold';
+
+import Login from './components/Auth/Login';
  
 
 
@@ -29,8 +36,15 @@ function App() {
   return (
     <BrowserRouter>
       <SideBar />
+
       <Routes>
         <Route exact path="/" element={<Home />} />
+
+        <Route exact path="/slide" element={<Slider />} />
+
+        <Route exact path="/gold" element={<GoldRate />} />
+
+        <Route exact path="/login" element={<Login />} />
 
         <Route exact path="/customers" element={<Customers />} />
         <Route exact path="/customer" element={<Customer />} />
