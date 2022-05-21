@@ -14,6 +14,11 @@ import CustomerDataService from "./services/customer.services"
 import './App.css';
 
 function App() {
+  this.onChangeName = this.onChangeName.bind(this);
+    this.onChangeCustId = this.onChangeCustId.bind(this);
+    this.onChangephoneNo= this.onChangeCustId.bind(this);
+    this.saveTutorial = this.saveTutorial.bind(this);
+    this.newTutorial = this.newTutorial.bind(this);
   this.state = {
     name: "",
     cust_id: "",
