@@ -1,24 +1,52 @@
-import logo from './logo.svg';
+import React from 'react';
+ 
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+} from 'react-router-dom';
+
+import Home from './components/Home';
+import Form from 'react-bootstrap/Form';
+import { Button } from 'react-bootstrap';
 import './App.css';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    // <Router>
+    //   <Route exact path="/" element={<Home />}></Route>
+    // </Router>
+    <Form className="m-5">
+      <Form.Group className="mb-3" controlId="formBasicEmail">
+        <Form.Label>Customer name</Form.Label>
+        <Form.Control type="text" placeholder="Enter name" />
+      </Form.Group>
+
+      <Form.Group className="mb-3" controlId="formBasicPassword">
+        <Form.Label>Customer Id</Form.Label>
+        <Form.Control type="text" />
+      </Form.Group>
+
+      <Form.Group className="mb-3" controlId="formBasicPassword">
+        <Form.Label>Phone Number</Form.Label>
+        <Form.Control type="number" />
+      </Form.Group>
+
+      <Form.Group className="mb-3" controlId="formBasicPassword">
+        <Form.Label>Address</Form.Label>
+        <Form.Control type="text" />
+      </Form.Group>
+
+      <Form.Group className="mb-3" controlId="formBasicPassword">
+        <Form.Label>Place</Form.Label>
+        <Form.Control type="text" />
+      </Form.Group>
+
+      <Button variant="primary" type="submit">
+        Submit
+      </Button>
+    </Form>
   );
 }
 
