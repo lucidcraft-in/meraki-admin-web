@@ -10,8 +10,10 @@ import {
 } from 'react-router-dom';
 
 import Home from './components/Home';
+ 
 import CreateCustomer from './components/Customer/Create';
 import UpdateCustomer from './components/Customer/Update';
+ 
 
 
 import './App.css';
