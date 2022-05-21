@@ -103,18 +103,24 @@ const Customers = () => {
                             </span>
                           </td> */}
                             <td class="align-middle">
-                            <a
-                              href="javascript:;"
-                              class="text-secondary font-weight-bold text-xs"
+                              <Link
+                                to={"/customer/update"}
+                              
+                              className="text-secondary font-weight-bold text-xs"
                               data-toggle="tooltip"
                                 data-original-title="Edit user"
                                 on
                             >
                               Edit
-                              </a>
+                              </Link>
                               &nbsp;
-                          <a
-                            href="javascript:;"
+                              <a
+                                
+                                onClick={() => {
+                                  if (window.confirm('Delete the item?')){
+                                    
+                                  }
+                                }}
                             className="text-danger font-weight-bold text-xs"
                             data-toggle="tooltip"
                             data-original-title="Edit user"
