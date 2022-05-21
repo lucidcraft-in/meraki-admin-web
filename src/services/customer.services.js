@@ -1,19 +1,39 @@
-import firebase from "../firebase";
-const db = firebase.collection("/user");
+import { db } from '../firebase';
+import {
+  collection,
+  getDocs,
+  getDoc,
+  addDoc,
+  updateDoc,
+  deleteDoc,
+  doc,
+} from 'firebase/firestore';
 
-class CustomerDataService { 
+const customerCollectionRef = collection(db, 'user');
+class CustomerDataService {
+  addCustomer = (newCustomer) => {
+    return addDoc(customerCollectionRef, newCustomer);
+    };
     
-    getAll() {
-        return db;
-    }
-    create(tutorial) {
-        return db.add(tutorial);
-      }
-      update(id, value) {
-        return db.doc(id).update(value);
-      }
-      delete(id) {
-        return db.doc(id).delete();
-      }
+  updateCustomer = (id, updatedCustomer) => {
+    const customerDoc = doc(db, 'user', id);
+    return updateDoc(customerDoc, updatedCustomer);
+  };
+
+    
+  deletCustome = (id) => {
+    const customerDoc = doc(db, 'user', id);
+    return deleteDoc(customerDoc);
+    };
+    
+  getAllCustomer = () => {
+    return getDocs(customerCollectionRef);
+    };
+    
+  getCustomer = (id) => {
+    const customerDoc = doc(db, 'user', id);
+    return getDoc(customerDoc);
+    };
+    
 }
 export default new CustomerDataService();

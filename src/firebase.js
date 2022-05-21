@@ -1,8 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
-import { getAnalytics } from 'firebase/analytics';
-import * as firebase from "firebase";
-import "firebase/firestore";
+
 // const firebaseConfig = {
 //   apiKey: 'AIzaSyDeEwQhp2_VeSBLKLPd669hiltPIRQ8Y94',
 //   authDomain: 'meraki-gold.firebaseapp.com',
@@ -22,11 +20,11 @@ const firebaseConfig = {
     appId: "1:706593650125:web:20a792e23ff90345458084",
     measurementId: "G-76NK6KDFPK"
   };
-// const app = initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
 // const analytics = getAnalytics(app);
 
-// const db = getFirestore(app);
-// export { db };
+const db = getFirestore(app);
+export { db };
 
-firebase.initializeApp(firebaseConfig);
-export default firebase.firestore();
+// firebase.initializeApp(firebaseConfig);
+// export default firebase;
