@@ -10,9 +10,18 @@ import {
 import Home from './components/Home';
 import Form from 'react-bootstrap/Form';
 import { Button } from 'react-bootstrap';
+import CustomerDataService from "./services/customer.services"
 import './App.css';
 
 function App() {
+  this.state = {
+    name: "",
+    cust_id: "",
+    phone_no: "",
+    address: "",
+    place:"",
+    submitted: false,
+  };
   return (
     // <Router>
     //   <Route exact path="/" element={<Home />}></Route>
