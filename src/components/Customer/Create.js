@@ -16,7 +16,7 @@ const CreateCustomer = () => {
     const [place, setPlace] = useState('');
     
   return (
-    <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg mt-5">
+    <main className="main-content position-relative max-height-vh-100 h-100 border-radius-lg mt-5">
       <Form className="m-5">
         <Form.Group className="mb-3" controlId="formBasicEmail">
           <Form.Label>Customer name</Form.Label>
