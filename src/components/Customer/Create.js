@@ -43,7 +43,7 @@ const CreateCustomer = () => {
       setMessage({ error: false, msg: "New Customer added successfully" });
     }
     catch (err) {
-      setMessage({err:true,msg:err.message})
+      setMessage({error:true,msg:err.message})
     }
     setName("")
     setAddress("")

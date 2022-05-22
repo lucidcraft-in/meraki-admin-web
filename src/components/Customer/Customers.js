@@ -12,6 +12,10 @@ const Customers = () => {
     console.log(data.docs.map((doc)=>({...doc.data(),id:doc.id})));
     setCustomers(data.docs.map((doc)=>({...doc.data(),id:doc.id})))
   }
+  const deleteHandler = async (id) => {
+    await customerServices.deletCustome(id)
+    getCustomers()
+  }
   return (
     <>
       <main className="main-content position-relative max-height-vh-100 h-100 border-radius-lg mt-5">
@@ -104,8 +108,7 @@ const Customers = () => {
                           </td> */}
                             <td class="align-middle">
                               <Link
-                                to={"/customer/update"}
-                              
+                                to={`/customer/update/${doc.id}`}
                               className="text-secondary font-weight-bold text-xs"
                               data-toggle="tooltip"
                                 data-original-title="Edit user"
@@ -118,7 +121,7 @@ const Customers = () => {
                                 
                                 onClick={() => {
                                   if (window.confirm('Delete the item?')){
-                                    
+                                    deleteHandler(doc.id);
                                   }
                                 }}
                             className="text-danger font-weight-bold text-xs"

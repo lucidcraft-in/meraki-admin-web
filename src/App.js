@@ -49,7 +49,7 @@ function App() {
         <Route exact path="/customers" element={<Customers />} />
         <Route exact path="/customer" element={<Customer />} />
         <Route exact path="/customer/create" element={<CreateCustomer />} />
-        <Route exact path="/customer/update/" element={<UpdateCustomer />} />
+        <Route exact path="/customer/update/:id" element={<UpdateCustomer />} />
       </Routes>
     </BrowserRouter>
   );
