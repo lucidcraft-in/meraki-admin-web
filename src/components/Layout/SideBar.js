@@ -1,7 +1,23 @@
 import React from 'react'
 import { Link } from 'react-router-dom';
+ 
 
-const SideBar =() =>{
+import { useNavigate } from 'react-router-dom';
+
+const SideBar = () => {
+  
+   const navigate = useNavigate();
+
+  if (!localStorage.staff) {
+    console.log("not");
+    navigate('/login');
+  }
+
+  const logout = () => {
+    localStorage.removeItem('staff');
+     navigate('/login');
+  }
+
   return (
     <aside
       className="sidenav navbar navbar-vertical navbar-expand-xs border-0 border-radius-xl my-3 fixed-start ms-3   bg-gradient-dark"
@@ -81,12 +97,12 @@ const SideBar =() =>{
          
          
           <li className="nav-item">
-            <a className="nav-link text-white " href="./pages/sign-up.html">
+            <Link className="nav-link text-white " to='/login'>
               <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
                 <i className="material-icons opacity-10">assignment</i>
               </div>
-              <span className="nav-link-text ms-1">Log Out</span>
-            </a>
+              <span className="nav-link-text ms-1" onClick={logout}>Log Out</span>
+            </Link>
           </li>
         </ul>
       </div>

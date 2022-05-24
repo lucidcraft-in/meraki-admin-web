@@ -8,7 +8,7 @@ import {
   deleteDoc,
   doc,
 } from 'firebase/firestore';
-const staffCollectionRef = collection(db, 'staff');
+const staffCollectionRef = collection(db, 'staffs');
 
 class LoginDataService { 
 
@@ -17,7 +17,7 @@ class LoginDataService {
     };
     
     getStaff = (id) => {
-        const cstaffDoc = doc(db, 'staff', id);
+        const cstaffDoc = doc(db, 'staffs', id);
         return getDoc(cstaffDoc);
         };
 }

@@ -1,15 +1,16 @@
 import React from 'react';
  
 import {
-  BrowserRouter ,
+  BrowserRouter,
   Switch,
   Route,
   Routes,
   Link,
- 
+  Outlet,
+  
 } from 'react-router-dom';
 
-import SideBar from './components/Layout/SideBar';
+import Sidebar from './components/Layout/SideBar';
 
 import Home from './components/Home';
 
@@ -29,27 +30,39 @@ import Login from './components/Auth/Login';
 
 import './App.css';
 
+const SidebarLayout = () => (
+  <>
+    <Sidebar />
+    <Outlet />
+  </>
+);
+
 function App() {
 
  
 
   return (
     <BrowserRouter>
-      <SideBar />
+      
 
       <Routes>
-        <Route exact path="/" element={<Home />} />
+        <Route element={<SidebarLayout />}>
+          <Route exact path="/" element={<Home />} />
 
-        <Route exact path="/slide" element={<Slider />} />
+          <Route exact path="/slide" element={<Slider />} />
 
-        <Route exact path="/gold" element={<GoldRate />} />
+          <Route exact path="/gold" element={<GoldRate />} />
+          <Route exact path="/customers" element={<Customers />} />
+          <Route exact path="/customer/:id" element={<Customer />} />
+          <Route exact path="/customer/create" element={<CreateCustomer />} />
+          <Route
+            exact
+            path="/customer/update/:id"
+            element={<UpdateCustomer />}
+          />
+        </Route>
 
         <Route exact path="/login" element={<Login />} />
-
-        <Route exact path="/customers" element={<Customers />} />
-        <Route exact path="/customer/:id" element={<Customer />} />
-        <Route exact path="/customer/create" element={<CreateCustomer />} />
-        <Route exact path="/customer/update/:id" element={<UpdateCustomer />} />
       </Routes>
     </BrowserRouter>
   );
