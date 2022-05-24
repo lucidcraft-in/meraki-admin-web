@@ -2,13 +2,51 @@ import React, {useState} from 'react'
 import { Button } from 'react-bootstrap';
 import Modal from 'react-bootstrap/Modal';
  import Form from 'react-bootstrap/Form';
- 
-
-const Popup = ({ show, handleClose, transactionType }) => {
+ import {
+  Timestamp,
+} from 'firebase/firestore';
+import transactionServices from '../../services/transaction.services';
+const Popup = ({ show, handleClose, transactionType,customerId }) => {
     
     const [amount, setAmount] = useState(0);
-    const [description, setDescription] = useState('');
-    
+  const [note, setDescription] = useState('');
+  const [message, setMessage] = useState({ error: false, msg: '' });
+    // const [customerId, setCustomerId] = useState('');
+ 
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setMessage("")
+    if (amount == "" ) {
+      setMessage({ error: true, msg: "Fields Value  Required" })
+      return;
+    }
+    const newTransaction = {
+      amount: amount,
+      category: "",
+      customerId: customerId,
+      customerName: "",
+      date: Timestamp.now(),
+      discount: 0.0,
+      invoiceNo: "",
+      note: note,
+      staffId: "",
+      transactionType: transactionType,
+      timestamp: Timestamp.now(),
+      
+    }
+    console.log("check transac");
+    console.log(newTransaction);
+    try {
+      await transactionServices.addTransaction(newTransaction)
+      setMessage({ error: false, msg: "New Transaction added successfully" });
+      handleClose()
+    }
+    catch (err) {
+      setMessage({error:true,msg:err.message})
+    }
+    setAmount(0)
+    setDescription("")
+  }
   return (
     <div>
       {' '}
@@ -18,9 +56,10 @@ const Popup = ({ show, handleClose, transactionType }) => {
             {transactionType === 0 ? 'Receipt Payment' : 'Purchase'}
           </Modal.Title>
         </Modal.Header>
+        <Form className="m-5" onSubmit={handleSubmit}>
         <Modal.Body>
           {' '}
-          <Form className="m-5">
+         
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label>Amount</Form.Label>
               <Form.Control
@@ -36,21 +75,22 @@ const Popup = ({ show, handleClose, transactionType }) => {
               <Form.Control
                 type="textarea"
                 onChange={(e) => setDescription(e.target.value)}
-                value={description}
+                value={note}
               />
             </Form.Group>
 
            
-          </Form>
+         
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={handleClose}>
             Close
           </Button>
-          <Button variant="primary" onClick={handleClose}>
+          <Button variant="primary" type="submit" >
             Save Changes
           </Button>
         </Modal.Footer>
+        </Form>
       </Modal>
     </div>
   );

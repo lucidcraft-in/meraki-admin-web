@@ -10,7 +10,8 @@ const Customers = () => {
   const getCustomers = async ()=>{
     const data = await customerServices.getAllCustomer()
     console.log(data.docs.map((doc)=>({...doc.data(),id:doc.id})));
-    setCustomers(data.docs.map((doc)=>({...doc.data(),id:doc.id})))
+    setCustomers(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
+
   }
   const deleteHandler = async (id) => {
     await customerServices.deletCustome(id)
@@ -72,7 +73,7 @@ const Customers = () => {
                           
                           <tr key={index}>
                              <td>
-                           <Link to='/customer'>
+                           <Link to={`/customer/${doc.id}`}>
                             <div className="d-flex px-2 py-1">
                               <div>
                                 <img
