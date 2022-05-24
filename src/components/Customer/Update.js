@@ -5,7 +5,13 @@ import { Button } from 'react-bootstrap';
 import customerServices from '../../services/customer.services';
 import { async } from '@firebase/util';
 
-const UpdateCustomer = ({match}) => {
+import { useNavigate } from 'react-router-dom';
+
+const UpdateCustomer = ({ match }) => {
+  
+  const navigate = useNavigate();
+  
+
   const [name, setName] = useState('');
   const [custId, seCustId] = useState('');
   const [phone, setPhone] = useState('');
@@ -14,8 +20,7 @@ const UpdateCustomer = ({match}) => {
   const [message, setMessage] = useState({ error: false, msg: '' });
   // const userId =match.params.id;
   const { id } = useParams();
-  console.log("check user id first");
-  console.log(id);
+  
   const editHandler = async () => {
     setMessage("")
     try {
@@ -58,7 +63,8 @@ const UpdateCustomer = ({match}) => {
     }
     try {
       if (id !== undefined && id !== "") {
-        await customerServices.updateCustomer(id,newCustomer)
+        await customerServices.updateCustomer(id, newCustomer);
+        navigate('/customers');
       }
     }
     catch (err) {

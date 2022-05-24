@@ -9,7 +9,12 @@ import {
 
 import customerServices from '../../services/customer.services';
 import { Alert } from 'bootstrap';
-const CreateCustomer = () => {
+import { useNavigate } from 'react-router-dom';
+
+const CreateCustomer = ( ) => {
+  
+ const navigate = useNavigate();
+
   const [name, setName] = useState('');
   const [custId, seCustId] = useState('');
   const [phone, setPhone] = useState('');
@@ -37,10 +42,13 @@ const CreateCustomer = () => {
       token:""
       
     }
-    console.log(newCustomer);
+    
     try {
-      await customerServices.addCustomer(newCustomer);
+      const res = await customerServices.addCustomer(newCustomer);
+       
+
       setMessage({ error: false, msg: "New Customer added successfully" });
+      navigate('/customers');
     }
     catch (err) {
       setMessage({error:true,msg:err.message})
@@ -52,15 +60,15 @@ const CreateCustomer = () => {
     setPlace("")
 
   };
+
+ 
+
   return (
-  
-  
     <main class="main-content position-relative max-height-vh-100 h-100 border-radius-lg mt-5">
-      
-      {message?.msg && (<Alert variant={message?.error ? "danger" : "success"}>
+      {/* {message?.msg && (<Alert variant={message?.error ? "danger" : "success"}>
         {" "}
         {message?.msg}
-      </Alert>)}
+      </Alert>)} */}
 
       <Form className="m-5" onSubmit={handleSubmit}>
         <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -70,6 +78,7 @@ const CreateCustomer = () => {
             placeholder="Enter name"
             onChange={(e) => setName(e.target.value)}
             value={name}
+            required={true}
           />
         </Form.Group>
 
@@ -79,6 +88,7 @@ const CreateCustomer = () => {
             type="text"
             onChange={(e) => seCustId(e.target.value)}
             value={custId}
+            required={true}
           />
         </Form.Group>
 
@@ -88,6 +98,7 @@ const CreateCustomer = () => {
             type="number"
             onChange={(e) => setPhone(e.target.value)}
             value={phone}
+            required={true}
           />
         </Form.Group>
 

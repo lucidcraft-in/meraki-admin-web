@@ -6,47 +6,56 @@ import Modal from 'react-bootstrap/Modal';
   Timestamp,
 } from 'firebase/firestore';
 import transactionServices from '../../services/transaction.services';
-const Popup = ({ show, handleClose, transactionType,customerId }) => {
-    
-    const [amount, setAmount] = useState(0);
+ 
+
+
+const Popup = ({
+  show,
+  handleClose,
+  transactionType,
+  customerId,
+  navigate,
+}) => {
+  const [amount, setAmount] = useState(0);
   const [note, setDescription] = useState('');
   const [message, setMessage] = useState({ error: false, msg: '' });
-    // const [customerId, setCustomerId] = useState('');
- 
+  // const [customerId, setCustomerId] = useState('');
+
+  console.log(navigate);
+
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    setMessage("")
-    if (amount == "" ) {
-      setMessage({ error: true, msg: "Fields Value  Required" })
+    e.preventDefault();
+    setMessage('');
+    if (amount == '') {
+      setMessage({ error: true, msg: 'Fields Value  Required' });
       return;
     }
     const newTransaction = {
       amount: amount,
-      category: "",
+      category: '',
       customerId: customerId,
-      customerName: "",
+      customerName: '',
       date: Timestamp.now(),
       discount: 0.0,
-      invoiceNo: "",
+      invoiceNo: '',
       note: note,
-      staffId: "",
+      staffId: '',
       transactionType: transactionType,
       timestamp: Timestamp.now(),
-      
-    }
-    console.log("check transac");
+    };
+    console.log('check transac');
     console.log(newTransaction);
     try {
-      await transactionServices.addTransaction(newTransaction)
-      setMessage({ error: false, msg: "New Transaction added successfully" });
-      handleClose()
+      await transactionServices.addTransaction(newTransaction);
+      setMessage({ error: false, msg: 'New Transaction added successfully' });
+      handleClose();
+      navigate(`/customers`);
+    } catch (err) {
+      setMessage({ error: true, msg: err.message });
     }
-    catch (err) {
-      setMessage({error:true,msg:err.message})
-    }
-    setAmount(0)
-    setDescription("")
-  }
+    setAmount(0);
+    setDescription('');
+  };
   return (
     <div>
       {' '}
@@ -57,9 +66,8 @@ const Popup = ({ show, handleClose, transactionType,customerId }) => {
           </Modal.Title>
         </Modal.Header>
         <Form className="m-5" onSubmit={handleSubmit}>
-        <Modal.Body>
-          {' '}
-         
+          <Modal.Body>
+            {' '}
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Label>Amount</Form.Label>
               <Form.Control
@@ -69,7 +77,6 @@ const Popup = ({ show, handleClose, transactionType,customerId }) => {
                 value={amount}
               />
             </Form.Group>
-
             <Form.Group className="mb-3" controlId="formBasicPassword">
               <Form.Label>Description</Form.Label>
               <Form.Control
@@ -78,23 +85,20 @@ const Popup = ({ show, handleClose, transactionType,customerId }) => {
                 value={note}
               />
             </Form.Group>
-
-           
-         
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={handleClose}>
-            Close
-          </Button>
-          <Button variant="primary" type="submit" >
-            Save Changes
-          </Button>
-        </Modal.Footer>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+              Close
+            </Button>
+            <Button variant="primary" type="submit">
+              Save Changes
+            </Button>
+          </Modal.Footer>
         </Form>
       </Modal>
     </div>
   );
-}
+};
 
 
 export default Popup;

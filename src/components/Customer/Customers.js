@@ -70,39 +70,42 @@ const Customers = () => {
                       {customers.map((doc, index) => {
                        
                         return (
-                          
                           <tr key={index}>
-                             <td>
-                           <Link to={`/customer/${doc.id}`}>
-                            <div className="d-flex px-2 py-1">
-                              <div>
-                                <img
-                                  src="../assets/img/team-2.jpg"
-                                  className="avatar avatar-sm me-3 border-radius-lg"
-                                  alt="user1"
-                                />
-                              </div>
-                              <div class="d-flex flex-column justify-content-center">
-                                  <h6 class="mb-0 text-sm">{ doc.name}</h6>
-                                <p class="text-xs text-secondary mb-0">
-                                 {doc.place}
-                                </p>
-                              </div>
-                            </div></Link>
-                          </td>
-                         
-                          <td>
-                              <p class="text-xs font-weight-bold mb-0">{ doc.cust_id}</p>
-                            <p class="text-xs text-secondary mb-0">
-                              {doc.phone_no}
-                            </p>
-                          </td>
-                          <td class="align-middle text-center text-sm">
-                            <span class="badge badge-sm bg-gradient-success">
-                              0.22
-                            </span>
-                          </td>
-                          {/* <td class="align-middle text-center">
+                            <td>
+                              <Link to={`/customer/${doc.id}`}>
+                                <div className="d-flex px-2 py-1">
+                                  <div>
+                                    <img
+                                      src="../assets/img/team-2.jpg"
+                                      className="avatar avatar-sm me-3 border-radius-lg"
+                                      alt="user1"
+                                    />
+                                  </div>
+                                  <div class="d-flex flex-column justify-content-center">
+                                    <h6 class="mb-0 text-sm">{doc.name}</h6>
+                                    <p class="text-xs text-secondary mb-0">
+                                      {doc.place}
+                                    </p>
+                                  </div>
+                                </div>
+                              </Link>
+                            </td>
+
+                            <td>
+                              <p class="text-xs font-weight-bold mb-0">
+                                {doc.cust_id}
+                              </p>
+                              <p class="text-xs text-secondary mb-0">
+                                {doc.phone_no}
+                              </p>
+                            </td>
+                            <td class="align-middle text-center text-sm">
+                              <span class={doc.balance < 0 ? "badge badge-sm bg-gradient-danger" : "badge badge-sm bg-gradient-success"}>
+                                {doc.balance}
+                               
+                              </span>
+                            </td>
+                            {/* <td class="align-middle text-center">
                             <span class="text-secondary text-xs font-weight-bold">
                              {doc.timestamp}
                             </span>
@@ -110,30 +113,29 @@ const Customers = () => {
                             <td class="align-middle">
                               <Link
                                 to={`/customer/update/${doc.id}`}
-                              className="text-secondary font-weight-bold text-xs"
-                              data-toggle="tooltip"
+                                className="text-secondary font-weight-bold text-xs"
+                                data-toggle="tooltip"
                                 data-original-title="Edit user"
                                 on
-                            >
-                              Edit
+                              >
+                                Edit
                               </Link>
                               &nbsp;
                               <a
-                                
                                 onClick={() => {
-                                  if (window.confirm('Delete the item?')){
+                                  if (window.confirm('Delete the item?')) {
                                     deleteHandler(doc.id);
                                   }
                                 }}
-                            className="text-danger font-weight-bold text-xs"
-                            data-toggle="tooltip"
-                            data-original-title="Edit user"
-                          >
-                            Delete
-                          </a>
-                          </td>
-                        </tr>
-                        )
+                                className="text-danger font-weight-bold text-xs pointer"
+                                data-toggle="tooltip"
+                                data-original-title="Edit user"
+                              >
+                                Delete
+                              </a>
+                            </td>
+                          </tr>
+                        );
                       })}
                      
 

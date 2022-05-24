@@ -1,12 +1,19 @@
  
 import React, { useState,useEffect } from 'react';
 import { Button } from 'react-bootstrap';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
+ 
+
 import Popup from '../Common/Modal';
 import './Customer.css'
 import transactionServices from '../../services/transaction.services';
 import customerServices from '../../services/customer.services';
+
+
+
 const Customer = () => {
+
+    const navigate = useNavigate();
   const { id } = useParams();
   const [transactions, setTransactions] = useState([])
   const [message, setMessage] = useState({ error: false, msg: '' });
@@ -15,10 +22,23 @@ const Customer = () => {
   const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
   const [place, setPlace] = useState('');
+    const [balance, setBalance] = useState(0);
+
+
+   const [show, setShow] = useState(false);
+   const [transactionType, setType] = useState(0);
+
+
+  
+
   useEffect(() => {
     getTransactions();
     editHandler();
   }, [])
+
+
+  const handleClose = () => setShow(false);
+  
 
   const editHandler = async () => { 
     try { 
@@ -29,6 +49,7 @@ const Customer = () => {
       setPhone(docSnap.data().phone_no)
       setAddress(docSnap.data().address)
       setPlace(docSnap.data().place)
+      setBalance(docSnap.data().balance);
 
     }
     catch (err) {
@@ -41,10 +62,7 @@ const Customer = () => {
     setTransactions(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
 
   }
-  const [show, setShow] = useState(false);
-   const [transactionType, setType] = useState(0);
-
-   const handleClose = () => setShow(false);
+ 
   const handleShow = (type) => {
     setShow(true);
 
@@ -61,6 +79,7 @@ const Customer = () => {
           handleClose={handleClose}
           transactionType={transactionType}
           customerId={id}
+          navigate={navigate}
         />
         <div className="row">
           <div className="col-md-7 mt-4">
@@ -81,9 +100,12 @@ const Customer = () => {
                   </div>
                   <div className="col-auto my-auto">
                     <div className="h-100">
-                      <h5 className="mb-1">{ name}</h5>
+                      <h5 className="mb-1">{name}</h5>
                       <p className="mb-0 font-weight-normal text-sm">
                         Scheme Customer
+                      </p>
+                      <p className="mb-0 font-weight-normal text-sm">
+                        <b> Balance : {balance}</b>
                       </p>
                     </div>
                   </div>
@@ -171,124 +193,62 @@ const Customer = () => {
                 <h6 className="text-uppercase text-body text-xs font-weight-bolder mb-3">
                   Newest
                 </h6>
-                {
-                  transactions.map((doc, index) => { 
-                    
-                    if (doc.customerId == id) {
-                      
-                      return (
-                        <ul className="list-group">
-                    <li className="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
-                      <div className="d-flex align-items-center">
-                        <button className="btn btn-icon-only btn-rounded btn-outline-danger mb-0 me-3 p-3 btn-sm d-flex align-items-center justify-content-center">
-                          <i className="material-icons text-lg">expand_more</i>
-                        </button>
-                        <div className="d-flex flex-column">
-                                <h6 className="mb-1 text-dark text-sm">{ doc.note}</h6>
-                          <span className="text-xs">
-                                  27 March 2020, at 12:30 PM
-                                  {/* {doc.date} */}
-                          </span>
+                {transactions.map((doc, index) => {
+                  console.log(doc);
+                  if (doc.customerId == id) {
+                    return doc.transactionType === 0 ? (
+                      <ul className="list-group">
+                        <li className="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+                          <div className="d-flex align-items-center">
+                            <button className="btn btn-icon-only btn-rounded btn-outline-success mb-0 me-3 p-3 btn-sm d-flex align-items-center justify-content-center">
+                              <i className="material-icons text-lg">
+                                expand_less
+                              </i>
+                            </button>
+                            <div className="d-flex flex-column">
+                              <h6 className="mb-1 text-dark text-sm">
+                                {doc.note}
+                              </h6>
+                              <span className="text-xs">
+                                {new Date(
+                                  doc.timestamp.seconds * 1000
+                                ).toLocaleDateString('en-US')}
+                              </span>
+                            </div>
+                          </div>
+                          <div className="d-flex align-items-center text-success text-gradient text-sm font-weight-bold">
+                            + {doc.amount}
+                          </div>
+                        </li>
+                      </ul>
+                    ) : (
+                      <li className="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+                        <div className="d-flex align-items-center">
+                          <button className="btn btn-icon-only btn-rounded btn-outline-danger mb-0 me-3 p-3 btn-sm d-flex align-items-center justify-content-center">
+                            <i className="material-icons text-lg">
+                              expand_more
+                            </i>
+                          </button>
+                          <div className="d-flex flex-column">
+                            <h6 className="mb-1 text-dark text-sm">
+                              {doc.note}
+                            </h6>
+                            <span className="text-xs">
+                              {new Date(
+                                doc.timestamp.seconds * 1000
+                              ).toLocaleDateString('en-US')}
+                              {/* {doc.date} */}
+                            </span>
+                          </div>
                         </div>
-                      </div>
-                            
-                      <div className="d-flex align-items-center text-danger text-gradient text-sm font-weight-bold">
-                        {doc.amount}
-                      </div>
-                    </li>
-                    {/* <li className="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
-                      <div className="d-flex align-items-center">
-                        <button className="btn btn-icon-only btn-rounded btn-outline-success mb-0 me-3 p-3 btn-sm d-flex align-items-center justify-content-center">
-                          <i className="material-icons text-lg">expand_less</i>
-                        </button>
-                        <div className="d-flex flex-column">
-                          <h6 className="mb-1 text-dark text-sm">Apple</h6>
-                          <span className="text-xs">
-                            27 March 2020, at 04:30 AM
-                          </span>
-                        </div>
-                      </div>
-                      <div className="d-flex align-items-center text-success text-gradient text-sm font-weight-bold">
-                        + $ 2,000
-                      </div>
-                    </li> */}
-                  </ul>
-                      )
-                    }
-               
 
-                  })
-                }
-                
-                <h6 className="text-uppercase text-body text-xs font-weight-bolder my-3">
-                  Yesterday
-                </h6>
-                {/* <ul className="list-group">
-                  <li className="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
-                    <div className="d-flex align-items-center">
-                      <button className="btn btn-icon-only btn-rounded btn-outline-success mb-0 me-3 p-3 btn-sm d-flex align-items-center justify-content-center">
-                        <i className="material-icons text-lg">expand_less</i>
-                      </button>
-                      <div className="d-flex flex-column">
-                        <h6 className="mb-1 text-dark text-sm">Stripe</h6>
-                        <span className="text-xs">
-                          26 March 2020, at 13:45 PM
-                        </span>
-                      </div>
-                    </div>
-                    <div className="d-flex align-items-center text-success text-gradient text-sm font-weight-bold">
-                      + $ 750
-                    </div>
-                  </li>
-                  <li className="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
-                    <div className="d-flex align-items-center">
-                      <button className="btn btn-icon-only btn-rounded btn-outline-success mb-0 me-3 p-3 btn-sm d-flex align-items-center justify-content-center">
-                        <i className="material-icons text-lg">expand_less</i>
-                      </button>
-                      <div className="d-flex flex-column">
-                        <h6 className="mb-1 text-dark text-sm">HubSpot</h6>
-                        <span className="text-xs">
-                          26 March 2020, at 12:30 PM
-                        </span>
-                      </div>
-                    </div>
-                    <div className="d-flex align-items-center text-success text-gradient text-sm font-weight-bold">
-                      + $ 1,000
-                    </div>
-                  </li>
-                  <li className="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
-                    <div className="d-flex align-items-center">
-                      <button className="btn btn-icon-only btn-rounded btn-outline-success mb-0 me-3 p-3 btn-sm d-flex align-items-center justify-content-center">
-                        <i className="material-icons text-lg">expand_less</i>
-                      </button>
-                      <div className="d-flex flex-column">
-                        <h6 className="mb-1 text-dark text-sm">Creative Tim</h6>
-                        <span className="text-xs">
-                          26 March 2020, at 08:30 AM
-                        </span>
-                      </div>
-                    </div>
-                    <div className="d-flex align-items-center text-success text-gradient text-sm font-weight-bold">
-                      + $ 2,500
-                    </div>
-                  </li>
-                  <li className="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
-                    <div className="d-flex align-items-center">
-                      <button className="btn btn-icon-only btn-rounded btn-outline-dark mb-0 me-3 p-3 btn-sm d-flex align-items-center justify-content-center">
-                        <i className="material-icons text-lg">priority_high</i>
-                      </button>
-                      <div className="d-flex flex-column">
-                        <h6 className="mb-1 text-dark text-sm">Webflow</h6>
-                        <span className="text-xs">
-                          26 March 2020, at 05:00 AM
-                        </span>
-                      </div>
-                    </div>
-                    <div className="d-flex align-items-center text-dark text-sm font-weight-bold">
-                      Pending
-                    </div>
-                  </li>
-                </ul> */}
+                        <div className="d-flex align-items-center text-danger text-gradient text-sm font-weight-bold">
+                          - {doc.amount}
+                        </div>
+                      </li>
+                    );
+                  }
+                })}
               </div>
             </div>
           </div>

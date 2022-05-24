@@ -1,3 +1,7 @@
 .customer-body{
   overflow-y: hidden;
 }
+
+.pointer {
+  cursor: pointer;
+}
