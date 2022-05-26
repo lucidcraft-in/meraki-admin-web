@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, { useState, useEffect } from 'react';
 import { Button } from 'react-bootstrap';
 import Modal from 'react-bootstrap/Modal';
  import Form from 'react-bootstrap/Form';
@@ -15,13 +15,19 @@ const Popup = ({
   transactionType,
   customerId,
   navigate,
+  isEdit,
+  editTransactionId,
 }) => {
   const [amount, setAmount] = useState(0);
   const [note, setDescription] = useState('');
   const [message, setMessage] = useState({ error: false, msg: '' });
   // const [customerId, setCustomerId] = useState('');
 
-  console.log(navigate);
+  useEffect(() => {
+    if (isEdit === true && editTransactionId !== '') {
+      editHandler();
+    }
+  }, [editTransactionId]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -43,8 +49,7 @@ const Popup = ({
       transactionType: transactionType,
       timestamp: Timestamp.now(),
     };
-    console.log('check transac');
-    console.log(newTransaction);
+
     try {
       await transactionServices.addTransaction(newTransaction);
       setMessage({ error: false, msg: 'New Transaction added successfully' });
@@ -56,10 +61,28 @@ const Popup = ({
     setAmount(0);
     setDescription('');
   };
+
+
+    const editHandler = async () => {
+      setMessage('');
+      try {
+        const docSnap = await transactionServices.getTransaction(
+          editTransactionId
+        );
+        console.log('check dataa');
+        console.log(docSnap);
+        setAmount(docSnap.data().amount);
+        setDescription(docSnap.data().note);
+        
+       
+      } catch (err) {
+        setMessage({ error: true, msg: err.message });
+      }
+    };
   return (
     <div>
       {' '}
-      <Modal show={show} onHide={handleClose}>
+      <Modal show={show} onHide={handleClose} backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title>
             {transactionType === 0 ? 'Receipt Payment' : 'Purchase'}

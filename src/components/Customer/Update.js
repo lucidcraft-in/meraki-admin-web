@@ -20,6 +20,12 @@ const UpdateCustomer = ({ match }) => {
   const [message, setMessage] = useState({ error: false, msg: '' });
   // const userId =match.params.id;
   const { id } = useParams();
+
+   useEffect(() => {
+     if (id !== undefined && id !== '') {
+       editHandler();
+     }
+   }, [id]);
   
   const editHandler = async () => {
     setMessage("")
@@ -72,13 +78,7 @@ const UpdateCustomer = ({ match }) => {
     }
     
   }
-  useEffect(() => {
-
-    if (id !== undefined && id !== "") {
-      editHandler()
-    }
-    
-  },[id])
+ 
   return (
     <main className="main-content position-relative max-height-vh-100 h-100 border-radius-lg mt-5">
       <Form className="m-5"  onSubmit={handleSubmit}>

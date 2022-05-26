@@ -13,7 +13,7 @@ import customerServices from '../../services/customer.services';
 
 const Customer = () => {
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const { id } = useParams();
   const [transactions, setTransactions] = useState([])
   const [message, setMessage] = useState({ error: false, msg: '' });
@@ -22,7 +22,9 @@ const Customer = () => {
   const [phone, setPhone] = useState('');
   const [address, setAddress] = useState('');
   const [place, setPlace] = useState('');
-    const [balance, setBalance] = useState(0);
+  const [balance, setBalance] = useState(0);
+  const [isEdit, setIsEdit] = useState(false);
+  const [editTransactionId, setEditTransactionId] = useState('');
 
 
    const [show, setShow] = useState(false);
@@ -58,7 +60,7 @@ const Customer = () => {
   }
   const getTransactions = async ()=>{
     const data = await transactionServices.getAllTransactions()
-    console.log(data.docs.map((doc)=>({...doc.data(),id:doc.id})));
+    // console.log(data.docs.map((doc)=>({...doc.data(),id:doc.id})));
     setTransactions(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })))
 
   }
@@ -69,6 +71,14 @@ const Customer = () => {
     setType(type);
   }
   
+
+  const handleClickEdit = (doc) => {
+    setIsEdit(true);
+    setShow(true);
+    setType(doc.transactionType);
+    setEditTransactionId(doc.id);
+    
+  }
   
   
   return (
@@ -80,6 +90,8 @@ const Customer = () => {
           transactionType={transactionType}
           customerId={id}
           navigate={navigate}
+          isEdit={isEdit}
+          editTransactionId={editTransactionId}
         />
         <div className="row">
           <div className="col-md-7 mt-4">
@@ -194,10 +206,13 @@ const Customer = () => {
                   Newest
                 </h6>
                 {transactions.map((doc, index) => {
-                  console.log(doc);
+                  // console.log(doc);
                   if (doc.customerId == id) {
                     return doc.transactionType === 0 ? (
-                      <ul className="list-group">
+                      <ul
+                        className="list-group"
+                        onClick={() => handleClickEdit(doc)}
+                      >
                         <li className="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
                           <div className="d-flex align-items-center">
                             <button className="btn btn-icon-only btn-rounded btn-outline-success mb-0 me-3 p-3 btn-sm d-flex align-items-center justify-content-center">
@@ -222,7 +237,10 @@ const Customer = () => {
                         </li>
                       </ul>
                     ) : (
-                      <li className="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
+                      <li
+                        className="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg"
+                        onClick={() => handleClickEdit(doc)}
+                      >
                         <div className="d-flex align-items-center">
                           <button className="btn btn-icon-only btn-rounded btn-outline-danger mb-0 me-3 p-3 btn-sm d-flex align-items-center justify-content-center">
                             <i className="material-icons text-lg">
