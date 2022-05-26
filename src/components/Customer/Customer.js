@@ -39,7 +39,10 @@ const Customer = () => {
   }, [])
 
 
-  const handleClose = () => setShow(false);
+  const handleClose = () => {
+    setShow(false);
+    setIsEdit(false)
+   }
   
 
   const editHandler = async () => { 
