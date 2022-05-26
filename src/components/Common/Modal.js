@@ -19,6 +19,7 @@ const Popup = ({
   editTransactionId,
 }) => {
   const [amount, setAmount] = useState(0);
+    const [oldAmount, setOldAmount] = useState(0);
   const [note, setDescription] = useState('');
   const [message, setMessage] = useState({ error: false, msg: '' });
   // const [customerId, setCustomerId] = useState('');
@@ -51,10 +52,23 @@ const Popup = ({
     };
 
     try {
-      await transactionServices.addTransaction(newTransaction);
+      if (isEdit === true) { 
+
+          await transactionServices.addTransaction(newTransaction);
+          setMessage({
+            error: false,
+            msg: ' Transaction Updated successfully',
+          });
+          handleClose();
+          navigate(`/customers`); 
+      }
+  else {
+       await transactionServices.addTransaction(newTransaction);
       setMessage({ error: false, msg: 'New Transaction added successfully' });
       handleClose();
-      navigate(`/customers`);
+      navigate(`/customers`); 
+  }
+ 
     } catch (err) {
       setMessage({ error: true, msg: err.message });
     }
@@ -73,6 +87,7 @@ const Popup = ({
         console.log(docSnap);
         setAmount(docSnap.data().amount);
         setDescription(docSnap.data().note);
+        setOldAmount(docSnap.data().amount);
         
        
       } catch (err) {
