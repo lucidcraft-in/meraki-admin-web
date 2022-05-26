@@ -1,8 +1,41 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
-
+import customerServices from '../services/customer.services';
+import goldRateServices from '../services/goldRate.services';
 
 function Home() {
+  const [totalAmount, setTotalAmount] = useState(0);
+  const [totalCustomerCount, setCustomerCount] = useState(0);
+   const [goldRate, setGoldRate] = useState(0);
+  
+ useEffect(() => {
+   getCustomers();
+   getGoldRate();
+ }, []);
+
+    const getCustomers = async () => {
+      const data = await customerServices.getAllCustomer();
+      let bal = 0;
+      data.docs.map((doc) => {
+           bal =doc.data().balance 
+      })
+      setTotalAmount(bal)
+    
+      setCustomerCount(data.docs.length);
+    
+  };
+  
+
+    const getGoldRate = async () => {
+      const data = await goldRateServices.getAllGoldRate();
+
+      const array = data.docs.map((doc) => ({ ...doc.data(), id: doc.id }));
+
+      
+
+      setGoldRate(array[0].gram);
+     
+    };
   return (
     <>
       <main className="main-content position-relative max-height-vh-100 h-100 border-radius-lg mt-5">
@@ -16,14 +49,12 @@ function Home() {
                   </div>
                   <div className="text-end pt-1">
                     <p className="text-sm mb-0 text-capitalize">Total Amount</p>
-                    <h4 className="mb-0">$53k</h4>
+                    <h4 className="mb-0">₹ {totalAmount}</h4>
                   </div>
                 </div>
                 <hr className="dark horizontal my-0" />
                 <div className="card-footer p-3">
-                  <p className="mb-0">
-                   Total Deposit amount in Scheme
-                  </p>
+                  <p className="mb-0">Total Deposit amount in Scheme</p>
                 </div>
               </div>
             </div>
@@ -34,15 +65,15 @@ function Home() {
                     <i className="material-icons opacity-10">person</i>
                   </div>
                   <div className="text-end pt-1">
-                    <p className="text-sm mb-0 text-capitalize">Total Customers</p>
-                    <h4 className="mb-0">2,300</h4>
+                    <p className="text-sm mb-0 text-capitalize">
+                      Total Customers
+                    </p>
+                    <h4 className="mb-0">{totalCustomerCount}</h4>
                   </div>
                 </div>
                 <hr className="dark horizontal my-0" />
                 <div className="card-footer p-3">
-                  <p className="mb-0">
-                   Your Customers
-                  </p>
+                  <p className="mb-0">Your Customers</p>
                 </div>
               </div>
             </div>
@@ -54,7 +85,7 @@ function Home() {
                   </div>
                   <div className="text-end pt-1">
                     <p className="text-sm mb-0 text-capitalize">Gold Rate</p>
-                    <h4 className="mb-0">3,462</h4>
+                    <h4 className="mb-0">₹ {goldRate} /gram</h4>
                   </div>
                 </div>
                 <hr className="dark horizontal my-0" />
@@ -68,65 +99,24 @@ function Home() {
                 </div>
               </div>
             </div>
-          
           </div>
 
           <footer className="footer py-4  fixed-bottom">
             <div className="container-fluid">
               <div className="row align-items-center justify-content-lg-between">
+                <div className="col-lg-6"></div>
                 <div className="col-lg-6 mb-lg-0 mb-4">
                   <div className="copyright text-center text-sm text-muted text-lg-start">
                     © <script>document.write(new Date().getFullYear())</script>,
                     made with <i className="fa fa-heart"></i> by
                     <a
-                      href="https://www.creative-tim.com"
+                      href="https://www.lucidcraft.in/"
                       className="font-weight-bold"
                       target="_blank"
                     >
-                      Creative Tim
+                      lucidcraft.in
                     </a>
-                    for a better web.
                   </div>
-                </div>
-                <div className="col-lg-6">
-                  <ul className="nav nav-footer justify-content-center justify-content-lg-end">
-                    <li className="nav-item">
-                      <a
-                        href="https://www.creative-tim.com"
-                        className="nav-link text-muted"
-                        target="_blank"
-                      >
-                        Creative Tim
-                      </a>
-                    </li>
-                    <li className="nav-item">
-                      <a
-                        href="https://www.creative-tim.com/presentation"
-                        className="nav-link text-muted"
-                        target="_blank"
-                      >
-                        About Us
-                      </a>
-                    </li>
-                    <li className="nav-item">
-                      <a
-                        href="https://www.creative-tim.com/blog"
-                        className="nav-link text-muted"
-                        target="_blank"
-                      >
-                        Blog
-                      </a>
-                    </li>
-                    <li className="nav-item">
-                      <a
-                        href="https://www.creative-tim.com/license"
-                        className="nav-link pe-0 text-muted"
-                        target="_blank"
-                      >
-                        License
-                      </a>
-                    </li>
-                  </ul>
                 </div>
               </div>
             </div>

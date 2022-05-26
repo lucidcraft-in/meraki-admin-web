@@ -1,5 +1,5 @@
 import React from 'react'
-import { Link } from 'react-router-dom';
+import { NavLink } from 'react-router-dom';
  
 
 import { useNavigate } from 'react-router-dom';
@@ -29,18 +29,14 @@ const SideBar = () => {
           aria-hidden="true"
           id="iconSidenav"
         ></i>
-        <a
-          className="navbar-brand m-0"
-          href=" https://demos.creative-tim.com/material-dashboard/pages/dashboard "
-          target="_blank"
-        >
+        <NavLink to="/" className="navbar-brand m-0" >
           <img
             src="./assets/img/logo-ct.png"
             className="navbar-brand-img h-100"
             alt="main_logo"
           />
           <span className="ms-1 font-weight-bold text-white">MERAKI GOLD</span>
-        </a>
+        </NavLink>
       </div>
       <hr className="horizontal light mt-0 mb-2" />
       <div
@@ -49,26 +45,27 @@ const SideBar = () => {
       >
         <ul className="navbar-nav">
           <li className="nav-item">
-            <Link to="/"
-              className="nav-link text-white active bg-gradient-primary"
-             
-            >
+            <NavLink to="/" className="nav-link text-white   ">
               <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
                 <i className="material-icons opacity-10">dashboard</i>
               </div>
               <span className="nav-link-text ms-1">Dashboard</span>
-            </Link>
+            </NavLink>
           </li>
           <li className="nav-item">
-            <Link to='/customers' className="nav-link text-white " href="./pages/tables.html">
+            <NavLink
+              to="/customers"
+              className="nav-link text-white "
+              href="./pages/tables.html"
+            >
               <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
                 <i className="material-icons opacity-10">table_view</i>
               </div>
               <span className="nav-link-text ms-1">CUSTOMERS</span>
-            </Link>
+            </NavLink>
           </li>
           <li className="nav-item">
-            <Link
+            <NavLink
               to="/slide"
               className="nav-link text-white "
               href="./pages/billing.html"
@@ -77,10 +74,10 @@ const SideBar = () => {
                 <i className="material-icons opacity-10">receipt_long</i>
               </div>
               <span className="nav-link-text ms-1">SLIDE</span>
-            </Link>
+            </NavLink>
           </li>
           <li className="nav-item">
-            <Link
+            <NavLink
               to="/gold"
               className="nav-link text-white "
               href="./pages/virtual-reality.html"
@@ -89,20 +86,18 @@ const SideBar = () => {
                 <i className="material-icons opacity-10">view_in_ar</i>
               </div>
               <span className="nav-link-text ms-1">GOLD RATE</span>
-            </Link>
+            </NavLink>
           </li>
-        
-          
-         
-         
-         
+
           <li className="nav-item">
-            <Link className="nav-link text-white " to='/login'>
+            <NavLink className="nav-link text-white " to="/login">
               <div className="text-white text-center me-2 d-flex align-items-center justify-content-center">
                 <i className="material-icons opacity-10">assignment</i>
               </div>
-              <span className="nav-link-text ms-1" onClick={logout}>Log Out</span>
-            </Link>
+              <span className="nav-link-text ms-1" onClick={logout}>
+                Log Out
+              </span>
+            </NavLink>
           </li>
         </ul>
       </div>
