@@ -1,6 +1,6 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
-
+import { getStorage } from 'firebase/storage';
 // const firebaseConfig = {
 //   apiKey: 'AIzaSyDeEwQhp2_VeSBLKLPd669hiltPIRQ8Y94',
 //   authDomain: 'meraki-gold.firebaseapp.com',
@@ -22,9 +22,11 @@ const firebaseConfig = {
   };
 const app = initializeApp(firebaseConfig);
 // const analytics = getAnalytics(app);
+// const storage = firebase.storage()
+const storage = getStorage(app);
 
 const db = getFirestore(app);
-export { db };
+export { db,storage };
 
 // firebase.initializeApp(firebaseConfig);
 // export default firebase;
