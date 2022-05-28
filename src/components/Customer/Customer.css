@@ -1,7 +1,13 @@
-.customer-body{
+#customer-body{
   overflow-y: hidden;
+   overflow-x: hidden;
 }
 
 .pointer {
   cursor: pointer;
+}
+
+#scroll{
+    height: 10px;
+  overflow: scroll;
 }

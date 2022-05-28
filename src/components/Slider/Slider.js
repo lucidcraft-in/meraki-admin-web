@@ -46,6 +46,7 @@ const Slider = () => {
     deleteDoc(slideDoc).then(() => {
       deleteObject(desertRef).then(() => {
         // File deleted successfully
+        getSlides();
       }).catch((error) => {
         // Uh-oh, an error occurred!
       });

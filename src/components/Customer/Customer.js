@@ -86,7 +86,10 @@ const Customer = () => {
   
   return (
     <>
-      <main className="main-content position-relative max-height-vh-100 h-100 border-radius-lg mt-5 customer-body">
+      <main
+        className="main-content position-relative max-height-vh-100 h-100 border-radius-lg mt-5  "
+        id="customer-body"
+      >
         <Popup
           show={show}
           handleClose={handleClose}
@@ -148,7 +151,7 @@ const Customer = () => {
                           <h6 className="mb-0">Personal Information</h6>
                         </div>
                         <div className="col-md-4 text-end">
-                          <a href="javascript:;">
+                          <a  >
                             <i
                               className="fas fa-user-edit text-secondary text-sm"
                               data-bs-toggle="tooltip"
@@ -204,7 +207,7 @@ const Customer = () => {
                   </div>
                 </div>
               </div>
-              <div className="card-body pt-4 p-3">
+              <div className="card-body pt-4 p-3" id="scroll">
                 <h6 className="text-uppercase text-body text-xs font-weight-bolder mb-3">
                   Newest
                 </h6>
@@ -215,6 +218,7 @@ const Customer = () => {
                       <ul
                         className="list-group"
                         onClick={() => handleClickEdit(doc)}
+                        key={index}
                       >
                         <li className="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg">
                           <div className="d-flex align-items-center">
@@ -243,6 +247,7 @@ const Customer = () => {
                       <li
                         className="list-group-item border-0 d-flex justify-content-between ps-0 mb-2 border-radius-lg"
                         onClick={() => handleClickEdit(doc)}
+                        key={index}
                       >
                         <div className="d-flex align-items-center">
                           <button className="btn btn-icon-only btn-rounded btn-outline-danger mb-0 me-3 p-3 btn-sm d-flex align-items-center justify-content-center">

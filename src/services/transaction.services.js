@@ -10,14 +10,24 @@ import {
 } from 'firebase/firestore';
 
 const transactionCollectionRef = collection(db, 'transactions');
+const customerCollectionRef = collection(db, 'user');
 class TransactionDataService {
-  addTransaction = (newTransaction) => {
-    return addDoc(transactionCollectionRef, newTransaction);
+  addTransaction = (newTransaction, updateBalance, id) => {
+    console.log("check inside  transactyion");
+    console.log(updateBalance);
+    addDoc(transactionCollectionRef, newTransaction);
+      const customerDoc = doc(db, 'user', id);
+      return updateDoc(customerDoc, updateBalance);
+   
   };
 
-  updateTransaction = (id, updatedTransaction) => {
+  updateTransaction = (id, updatedTransaction,updateBalance,custId) => {
     const transactionDoc = doc(db, 'transactions', id);
-    return updateDoc(transactionDoc, updatedTransaction);
+     updateDoc(transactionDoc, updatedTransaction);
+       const customerDoc = doc(db, 'user', custId);
+      return updateDoc(customerDoc, updateBalance);
+   
+    
   };
 
   deletTransaction = (id) => {

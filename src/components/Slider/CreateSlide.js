@@ -17,21 +17,24 @@ import {
  import {
   Timestamp,
 } from 'firebase/firestore';
+import { useNavigate } from 'react-router-dom';
 
 const CreateSlide = (
     {
         show,
     handleClose,
-    navigate,
+
    }
     
 ) => { 
   const [imageUpload, setImageUpload] = useState(null);
   const slideCollectionRef = collection(db, 'slide');
-  const [progress,setProgress]=useState(0)
+  const [progress, setProgress] = useState(0)
+  const [showProgress,setShowProgress]=useState(false)
+   const navigate = useNavigate();
   const upload = () => {
     if (imageUpload == null) return;
-    
+    setShowProgress(true);
     const imageRef = ref(storage, `images/${imageUpload.name}`)
     const uploadTask = uploadBytesResumable(imageRef, imageUpload)
 
@@ -47,9 +50,15 @@ const CreateSlide = (
                 photo: url,
                 name: imageUpload.name,
               }
-              addDoc(slideCollectionRef, newSlide)
-          alert("Slide Addedd success");
-          handleClose();
+          addDoc(slideCollectionRef, newSlide).then(() => {
+                 alert('Slide Addedd success');
+                 handleClose();
+                 // navigate('/slide');
+
+                 setProgress(false);
+                 window.location.reload();
+              })
+         
       })
     }
     )
@@ -89,39 +98,43 @@ const CreateSlide = (
     
     
     return (
-        <div>
-          {' '}
-          <Modal show={show} onHide={handleClose} backdrop="static">
-            <Modal.Header closeButton>
-              <Modal.Title>
-                 Add Slide
-              </Modal.Title>
-            </Modal.Header>
-            <Form className="m-5" >
-              <Modal.Body>
-                        {' '}
-              <input type="file" onChange={(e)=>{setImageUpload(e.target.files[0])}}/>
-              
-                        {/* <input type="file" onChange={(e)=>{setImage(e.target.files[0])}}/> */}
-                
-                        
-              </Modal.Body>
-              <Modal.Footer>
-                <Button variant="secondary" onClick={handleClose}>
-                  Close
-                </Button>
-                <Button variant="primary" onClick={upload}>
+      <div>
+        {' '}
+        <Modal show={show} onHide={handleClose} backdrop="static">
+          <Modal.Header closeButton>
+            <Modal.Title>Add Slide</Modal.Title>
+          </Modal.Header>
+          <Form className="m-5">
+            <Modal.Body>
+              {' '}
+              <input
+                type="file"
+                onChange={(e) => {
+                  setImageUpload(e.target.files[0]);
+                }}
+              />
+              {/* <input type="file" onChange={(e)=>{setImage(e.target.files[0])}}/> */}
+              <hr />
+             
+              {showProgress == true ? <h3>uploaded {progress} %</h3> : ''}
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="secondary" onClick={handleClose}>
+                Close
+              </Button>
+              <Button variant="primary" onClick={upload}>
                 Upload
-                </Button>
-                      {/* <Button variant="primary" type="submit"
+              </Button>
+
+              {/* <Button variant="primary" type="submit"
                             onClick={this.handleUpload}>
                             Save Changes,
                 </Button> */}
-              </Modal.Footer>
-            </Form>
-          </Modal>
-        </div>
-      );
+            </Modal.Footer>
+          </Form>
+        </Modal>
+      </div>
+    );
 }
 
 export default CreateSlide;
