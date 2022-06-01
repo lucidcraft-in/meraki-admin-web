@@ -7,6 +7,8 @@ import transactionServices from '../../services/transaction.services';
 import customerService from '../../services/customer.services';
 import { async } from '@firebase/util';
 import { getMessaging, getToken, onMessage } from 'firebase/messaging';
+import {messaging} from '../../firebase'
+
 const Popup = ({
   show,
   handleClose,
@@ -151,7 +153,10 @@ const Popup = ({
               body: `Add RS ${amount} to your account`,
             },
           };
-   
+          console.log("check pay loadfd");
+          console.log(payloadRecive)
+          console.log(messaging);
+ 
       
           // messaging.messaging().send(payloadRecive).
           // then((response) => {
@@ -211,7 +216,28 @@ const Popup = ({
       setMessage({ error: true, msg: err.message });
     }
   };
+  const sendMessages = () => {
+    const registrationToken =
+      'cGn6EQd-RuOW8Ido0cKExz:APA91bHRlmO0dUIESyjFITNMFChihs5YWoGUIcrRU0CnzsqyDrCpYG_uxM1uOTArdhbQbkkVpJfENXlMrMvuhC9od22Oz1nEtpzCV1A6bpuLjtizb8EsWVchyp-jJZLKQxPvycxd9ftx';
 
+    const message = {
+      data: {
+        score: '850',
+        time: '2:45',
+      },
+      token: registrationToken,
+    };
+ 
+    getMessaging()
+      .send(message)
+      .then((response) => {
+        // Response is a message ID string.
+        console.log('Successfully sent message:', response);
+      })
+      .catch((error) => {
+        console.log('Error sending message:', error);
+      });
+  };
   return (
     <div>
       {' '}
@@ -249,6 +275,9 @@ const Popup = ({
             <Button variant="primary" type="submit">
               Save Changes
             </Button>
+            <button onClick={sendMessages()}>
+              send msg
+            </button>
           </Modal.Footer>
         </Form>
       </Modal>

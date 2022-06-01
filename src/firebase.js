@@ -27,7 +27,8 @@ const app = initializeApp(firebaseConfig);
 // const analytics = getAnalytics(app);
 // const storage = firebase.storage()
 const storage = getStorage(app);
-const messaging = getMessaging();
+const messaging = getMessaging(app);
+
 const db = getFirestore(app);
 export { db,storage,messaging, };
 
