@@ -36,8 +36,7 @@ const CreateCustomer = ( ) => {
       address: address,
       place: place,
       balance: 0.00,
-      schemeType: "Monthly",
-      staffId: "",
+
       timestamp: Timestamp.now(),
       token:""
       

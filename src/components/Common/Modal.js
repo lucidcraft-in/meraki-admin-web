@@ -21,6 +21,7 @@ const Popup = ({
   const [custbalance, setCustBalance] = useState(0);
   const [oldAmount, setOldAmount] = useState(0);
   const [note, setDescription] = useState('');
+  const [token, setToken] = useState('');
   const [message, setMessage] = useState({ error: false, msg: '' });
   // const [customerId, setCustomerId] = useState('');
 
@@ -37,13 +38,12 @@ const Popup = ({
       console.log('check dataa');
       console.log(docSnap);
       setCustBalanceDb(docSnap.data().balance);
+      setToken(docSnap.data().token)
     } catch (err) {
       setMessage({ error: true, msg: err.message });
     }
   };
 
- 
- 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage('');
@@ -52,21 +52,22 @@ const Popup = ({
       return;
     }
     const newTransaction = {
-      amount: amount,
-      category: '',
+      amount: parseFloat(amount),
       customerId: customerId,
       customerName: '',
       date: Timestamp.now(),
-      discount: 0.0,
-      invoiceNo: '',
       note: note,
-      staffId: '',
       transactionType: transactionType,
       timestamp: Timestamp.now(),
+      // here remoove after tsr
+      // category:"",
+      // discount: 0,
+      // invoiceNo:"",
+      // staffId:"",
     };
 
     const editedTransaction = {
-      amount: amount,
+      amount:parseFloat(amount),
 
       customerId: customerId,
 
@@ -79,48 +80,39 @@ const Popup = ({
 
     try {
       if (isEdit === true) {
-          
+        let decreaseBalance = 0;
+        let newTempBalnce = 0;
+        // recive amount
+        if (transactionType == 0) {
+          decreaseBalance = custBalanceDb - oldAmount;
+          newTempBalnce = decreaseBalance + parseFloat(amount);
+        }
+        //  purchase amount
+        else if (transactionType == 1) {
+          console.log('custBalanceDb', custBalanceDb);
+          console.log('oldAmount', oldAmount);
 
-  let decreaseBalance = 0;
-  let newTempBalnce = 0;
-  // recive amount
-  if (transactionType == 0) {
-    decreaseBalance = custBalanceDb - oldAmount;
-      newTempBalnce = decreaseBalance + parseFloat(amount);
-  }
-  //  purchase amount
-  else if (transactionType == 1) {
+          console.log(' parseFloat(amount)', parseFloat(amount));
 
-    console.log('custBalanceDb', custBalanceDb);
-    console.log('oldAmount', oldAmount);
+          decreaseBalance = custBalanceDb + parseFloat(oldAmount);
+          newTempBalnce = decreaseBalance - parseFloat(amount);
 
-      console.log(' parseFloat(amount)', parseFloat(amount));
-    
-    decreaseBalance = custBalanceDb + parseFloat(oldAmount);
-    newTempBalnce = decreaseBalance - parseFloat(amount);
-    
-    console.log('decreaseBalance', decreaseBalance);
-     console.log('newTempBalnce', newTempBalnce);
-  }
-  setCustBalance(newTempBalnce);
+          console.log('decreaseBalance', decreaseBalance);
+          console.log('newTempBalnce', newTempBalnce);
+        }
+        setCustBalance(newTempBalnce);
 
-       
-
-
-  const editedUserBalance = {
-    balance: newTempBalnce,
+        const editedUserBalance = {
+          balance: parseFloat(newTempBalnce),
         };
-        
-        
 
-        
         await transactionServices.updateTransaction(
           editTransactionId,
           editedTransaction,
           editedUserBalance,
-          customerId,
+          customerId
         );
-     
+
         setMessage({
           error: false,
           msg: ' Transaction Updated successfully',
@@ -128,7 +120,6 @@ const Popup = ({
         handleClose();
         navigate(`/customers`);
       } else {
-
         let newTempBalnce = 0;
 
         if (transactionType == 0) {
@@ -138,18 +129,56 @@ const Popup = ({
         }
 
         setCustBalance(newTempBalnce);
-
        
-         const newUserBalance = {
-           balance: newTempBalnce,
-         };
-        
+        const newUserBalance = {
+          balance: parseFloat(newTempBalnce),
+        };
+
         await transactionServices.addTransaction(
           newTransaction,
           newUserBalance,
-          customerId,
+          customerId
         );
-       
+        if (transactionType == 0) {
+          const payloadRecive = {
+            token: token,
+            notification: {
+              title: "Transaction Completed",
+              body: `Add RS ${amount} to your account`,
+            },
+            data: {
+              body: `Add RS ${amount} to your account`,
+            },
+          };
+          // admin.messaging().send(payloadRecive).
+          // then((response) => {
+          //   console.log("Successfully sent message:",
+          //       response);
+          //   // return {success: true};
+          // }).catch((error) => {
+          //   return {error: error.code};
+          // });
+        } else {
+          const payloadPurchase = {
+            token: token,
+            notification: {
+              title: "Transaction Completed",
+              body: `Reduce RS ${amount} to your account`,
+            },
+            data: {
+              body: `Reduce RS ${amount} to your account`,
+            },
+          };
+          // admin.messaging().send(payloadPurchase).
+          // then((response) => {
+          //   console.log("Successfully sent message:",
+          //       response);
+          //   // return {success: true};
+          // }).catch((error) => {
+          //   return {error: error.code};
+          // });
+        }
+        
         setMessage({ error: false, msg: 'New Transaction added successfully' });
         handleClose();
         navigate(`/customers`);
@@ -177,49 +206,48 @@ const Popup = ({
     }
   };
 
-  
-    return (
-      <div>
-        {' '}
-        <Modal show={show} onHide={handleClose} backdrop="static">
-          <Modal.Header closeButton>
-            <Modal.Title>
-              {transactionType === 0 ? 'Receipt Payment' : 'Purchase'}
-            </Modal.Title>
-          </Modal.Header>
-          <Form className="m-5" onSubmit={handleSubmit}>
-            <Modal.Body>
-              {' '}
-              <Form.Group className="mb-3" controlId="formBasicEmail">
-                <Form.Label>Amount</Form.Label>
-                <Form.Control
-                  type="number"
-                  placeholder="Enter Amount Given"
-                  onChange={(e) => setAmount(e.target.value)}
-                  value={amount}
-                />
-              </Form.Group>
-              <Form.Group className="mb-3" controlId="formBasicPassword">
-                <Form.Label>Description</Form.Label>
-                <Form.Control
-                  type="textarea"
-                  onChange={(e) => setDescription(e.target.value)}
-                  value={note}
-                />
-              </Form.Group>
-            </Modal.Body>
-            <Modal.Footer>
-              <Button variant="secondary" onClick={handleClose}>
-                Close
-              </Button>
-              <Button variant="primary" type="submit">
-                Save Changes
-              </Button>
-            </Modal.Footer>
-          </Form>
-        </Modal>
-      </div>
-    );
+  return (
+    <div>
+      {' '}
+      <Modal show={show} onHide={handleClose} backdrop="static">
+        <Modal.Header closeButton>
+          <Modal.Title>
+            {transactionType === 0 ? 'Receipt Payment' : 'Purchase'}
+          </Modal.Title>
+        </Modal.Header>
+        <Form className="m-5" onSubmit={handleSubmit}>
+          <Modal.Body>
+            {' '}
+            <Form.Group className="mb-3" controlId="formBasicEmail">
+              <Form.Label>Amount</Form.Label>
+              <Form.Control
+                type="number"
+                placeholder="Enter Amount Given"
+                onChange={(e) => setAmount(e.target.value)}
+                value={amount}
+              />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="formBasicPassword">
+              <Form.Label>Description</Form.Label>
+              <Form.Control
+                type="textarea"
+                onChange={(e) => setDescription(e.target.value)}
+                value={note}
+              />
+            </Form.Group>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={handleClose}>
+              Close
+            </Button>
+            <Button variant="primary" type="submit">
+              Save Changes
+            </Button>
+          </Modal.Footer>
+        </Form>
+      </Modal>
+    </div>
+  );
 };
 
 export default Popup;

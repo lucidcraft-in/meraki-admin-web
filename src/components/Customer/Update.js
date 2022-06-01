@@ -60,11 +60,8 @@ const UpdateCustomer = ({ match }) => {
       phone_no: phone,
       address: address,
       place: place,
-      balance: 0.00,
-      schemeType: "Monthly",
-      staffId: "",
-      // timestamp: Timestamp.now(),
-      token:""
+    
+
       
     }
     try {
