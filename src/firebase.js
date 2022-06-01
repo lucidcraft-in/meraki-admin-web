@@ -1,7 +1,9 @@
 import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 import { getStorage } from 'firebase/storage';
-import { getMessaging } from "firebase/messaging";
+// import { getMessaging } from "firebase/messaging";
+
+
 // oro
 // const firebaseConfig = {
 //   apiKey: "AIzaSyBr_-PifmOrGheAOCfRuFGuNPMXYiRNPb8",
@@ -27,10 +29,9 @@ const app = initializeApp(firebaseConfig);
 // const analytics = getAnalytics(app);
 // const storage = firebase.storage()
 const storage = getStorage(app);
-const messaging = getMessaging(app);
 
 const db = getFirestore(app);
-export { db,storage,messaging, };
+export { db,storage, };
 
 // firebase.initializeApp(firebaseConfig);
 // export default firebase;

@@ -6,8 +6,7 @@ import { Timestamp } from 'firebase/firestore';
 import transactionServices from '../../services/transaction.services';
 import customerService from '../../services/customer.services';
 import { async } from '@firebase/util';
-import { getMessaging, getToken, onMessage } from 'firebase/messaging';
-import {messaging} from '../../firebase'
+
 
 const Popup = ({
   show,
@@ -18,7 +17,7 @@ const Popup = ({
   isEdit,
   editTransactionId,
 }) => {
-  const messaging = getMessaging();
+  // const messaging = getMessaging();
   const [amount, setAmount] = useState(0);
   const [custBalanceDb, setCustBalanceDb] = useState(0);
   const [custbalance, setCustBalance] = useState(0);
@@ -27,12 +26,15 @@ const Popup = ({
   const [token, setToken] = useState('');
   const [message, setMessage] = useState({ error: false, msg: '' });
   // const [customerId, setCustomerId] = useState('');
-
+  
   useEffect(() => {
     if (isEdit === true && editTransactionId !== '') {
       editHandler();
     }
     getCustomer();
+    //const messaging = getMessaging();
+    
+    
   }, [editTransactionId]);
 
   const getCustomer = async () => {
@@ -155,7 +157,7 @@ const Popup = ({
           };
           console.log("check pay loadfd");
           console.log(payloadRecive)
-          console.log(messaging);
+          
  
       
           // messaging.messaging().send(payloadRecive).
@@ -216,28 +218,7 @@ const Popup = ({
       setMessage({ error: true, msg: err.message });
     }
   };
-  const sendMessages = () => {
-    const registrationToken =
-      'cGn6EQd-RuOW8Ido0cKExz:APA91bHRlmO0dUIESyjFITNMFChihs5YWoGUIcrRU0CnzsqyDrCpYG_uxM1uOTArdhbQbkkVpJfENXlMrMvuhC9od22Oz1nEtpzCV1A6bpuLjtizb8EsWVchyp-jJZLKQxPvycxd9ftx';
-
-    const message = {
-      data: {
-        score: '850',
-        time: '2:45',
-      },
-      token: registrationToken,
-    };
- 
-    getMessaging()
-      .send(message)
-      .then((response) => {
-        // Response is a message ID string.
-        console.log('Successfully sent message:', response);
-      })
-      .catch((error) => {
-        console.log('Error sending message:', error);
-      });
-  };
+  
   return (
     <div>
       {' '}
@@ -275,9 +256,7 @@ const Popup = ({
             <Button variant="primary" type="submit">
               Save Changes
             </Button>
-            <button onClick={sendMessages()}>
-              send msg
-            </button>
+           
           </Modal.Footer>
         </Form>
       </Modal>
