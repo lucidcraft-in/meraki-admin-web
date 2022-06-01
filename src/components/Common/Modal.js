@@ -6,7 +6,7 @@ import { Timestamp } from 'firebase/firestore';
 import transactionServices from '../../services/transaction.services';
 import customerService from '../../services/customer.services';
 import { async } from '@firebase/util';
-
+import { getMessaging, getToken, onMessage } from 'firebase/messaging';
 const Popup = ({
   show,
   handleClose,
@@ -16,6 +16,7 @@ const Popup = ({
   isEdit,
   editTransactionId,
 }) => {
+  const messaging = getMessaging();
   const [amount, setAmount] = useState(0);
   const [custBalanceDb, setCustBalanceDb] = useState(0);
   const [custbalance, setCustBalance] = useState(0);
@@ -150,12 +151,19 @@ const Popup = ({
               body: `Add RS ${amount} to your account`,
             },
           };
-          // admin.messaging().send(payloadRecive).
+   
+      
+          // messaging.messaging().send(payloadRecive).
           // then((response) => {
-          //   console.log("Successfully sent message:",
-          //       response);
-          //   // return {success: true};
+          //   console.log("Successfully sent message:",response);
+              
+              setMessage({ error: false, msg: 'New Transaction added successfully' });
+              handleClose();
+              navigate(`/customers`);
+          //   return {success: true};
           // }).catch((error) => {
+          //   console.log("check eeeerror");
+          //   console.log(error);
           //   return {error: error.code};
           // });
         } else {
@@ -179,9 +187,7 @@ const Popup = ({
           // });
         }
         
-        setMessage({ error: false, msg: 'New Transaction added successfully' });
-        handleClose();
-        navigate(`/customers`);
+       
       }
     } catch (err) {
       setMessage({ error: true, msg: err.message });
