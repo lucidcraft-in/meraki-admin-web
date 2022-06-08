@@ -27,10 +27,10 @@ const GoldRate = () => {
     setGoldRate(array);
     
     
-    setGram(array[0].gram);
-    setPavan(array[0].pavan);
-    setUp(array[0].up);
-    setDown(array[0].down);
+    setGram(parseFloat(array[0].gram));
+    setPavan(parseFloat(array[0].pavan));
+    setUp(parseFloat(array[0].up));
+    setDown(parseFloat(array[0].down));
  
   }
 
@@ -69,7 +69,7 @@ const GoldRate = () => {
             <Form.Control
               type="number"
               placeholder="Enter gram"
-              onChange={(e) => setGram(e.target.value)}
+              onChange={(e) => setGram(parseFloat(e.target.value))}
               value={gram}
             />
           </Form.Group>
@@ -78,7 +78,7 @@ const GoldRate = () => {
             <Form.Label>rate in 8 Gram</Form.Label>
             <Form.Control
               type="number"
-              onChange={(e) => setPavan(e.target.value)}
+              onChange={(e) => setPavan(parseFloat(e.target.value))}
               value={pavan}
             />
           </Form.Group>
@@ -87,13 +87,13 @@ const GoldRate = () => {
             <Form.Label>Up</Form.Label>
             <Form.Control
               type="number"
-              onChange={(e) => setUp(e.target.value)}
+              onChange={(e) => setUp(parseFloat(e.target.value))}
               value={up}
             />
             <Form.Label>Down</Form.Label>
             <Form.Control
               type="number"
-              onChange={(e) => setDown(e.target.value)}
+              onChange={(e) => setDown(parseFloat(e.target.value))}
               value={down}
             />
           </Form.Group>

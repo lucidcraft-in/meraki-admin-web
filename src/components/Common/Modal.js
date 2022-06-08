@@ -49,6 +49,32 @@ const Popup = ({
     }
   };
 
+  const deleteEvent = async () => {
+    let newTempBalnce = 0;
+    if (editTransactionId) {
+      if (transactionType == 0) { 
+        newTempBalnce = custBalanceDb - oldAmount;
+      }
+      else {
+        newTempBalnce = custBalanceDb + oldAmount;
+      }
+      setCustBalance(newTempBalnce);
+      const newUserBalance = {
+        balance: parseFloat(newTempBalnce),
+      };
+      await transactionServices.deletTransaction(
+        editTransactionId,
+        newUserBalance,
+        customerId
+      );
+     
+      handleClose();
+      window.location.reload();
+      // navigate(`/customer/${customerId}`);
+  
+    }
+    
+  }
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage('');
@@ -250,13 +276,17 @@ const Popup = ({
             </Form.Group>
           </Modal.Body>
           <Modal.Footer>
+            {isEdit === true ?<Button variant="danger" onClick={deleteEvent}>
+              Delete
+            </Button> : null}
             <Button variant="secondary" onClick={handleClose}>
               Close
             </Button>
             <Button variant="primary" type="submit">
               Save Changes
             </Button>
-           
+            
+            
           </Modal.Footer>
         </Form>
       </Modal>

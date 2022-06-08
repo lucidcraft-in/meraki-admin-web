@@ -30,9 +30,11 @@ class TransactionDataService {
     
   };
 
-  deletTransaction = (id) => {
+  deletTransaction = (id,updateBalance,custId) => {
     const transactionDoc = doc(db, 'transactions', id);
-    return deleteDoc(transactionDoc);
+     deleteDoc(transactionDoc);
+    const customerDoc = doc(db, 'user', custId);
+    return updateDoc(customerDoc, updateBalance);
   };
   getAllTransactions = () => {
     return getDocs(transactionCollectionRef);

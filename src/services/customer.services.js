@@ -7,6 +7,8 @@ import {
   updateDoc,
   deleteDoc,
   doc,
+  orderBy,
+  query,
 } from 'firebase/firestore';
 
 const customerCollectionRef = collection(db, 'user');
@@ -27,7 +29,8 @@ class CustomerDataService {
     };
     
   getAllCustomer = () => {
-    return getDocs(customerCollectionRef);
+    // return getDocs(customerCollectionRef,orderBy("cust_id"));
+    return getDocs(query(customerCollectionRef, orderBy('cust_id')));
     };
     
   getCustomer = (id) => {
