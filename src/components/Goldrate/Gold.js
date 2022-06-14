@@ -4,6 +4,9 @@ import { Button } from 'react-bootstrap';
 import goldRateServices from '../../services/goldRate.services';
 
 import { useNavigate } from 'react-router-dom';
+import { getFunctions, httpsCallable } from "firebase/functions";
+
+const functions = getFunctions();
 
 const GoldRate = () => {
 
@@ -52,6 +55,12 @@ const GoldRate = () => {
     try {
       if (goldRate !== undefined && goldRate !== '') {
         await goldRateServices.updateGoldRate(goldRate[0].id, newGoldRate);
+
+        const addMessage = httpsCallable(functions, 'sendNotificationGoldRate', );
+        addMessage({ pavan: pavan }).then(result => {
+          console.log(result.data);
+        });
+
         navigate('/');
       }
     }

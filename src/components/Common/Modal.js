@@ -7,6 +7,7 @@ import transactionServices from '../../services/transaction.services';
 import customerService from '../../services/customer.services';
 import { async } from '@firebase/util';
 
+import { getFunctions, httpsCallable } from "firebase/functions";
 
 const Popup = ({
   show,
@@ -36,6 +37,9 @@ const Popup = ({
     
     
   }, [editTransactionId]);
+
+  const functions = getFunctions();
+
 
   const getCustomer = async () => {
     try {
@@ -143,7 +147,7 @@ const Popup = ({
           editedUserBalance,
           customerId
         );
-
+       
         setMessage({
           error: false,
           msg: ' Transaction Updated successfully',
@@ -181,10 +185,13 @@ const Popup = ({
               body: `Add RS ${amount} to your account`,
             },
           };
-          console.log("check pay loadfd");
-          console.log(payloadRecive)
+          // console.log("check pay loadfd");
+          // console.log(payloadRecive)
           
- 
+          const addMessage = httpsCallable(functions, 'sendNotification', );
+          addMessage({ token: token, amount: amount }).then(result => {
+            console.log(result.data);
+          });
       
           // messaging.messaging().send(payloadRecive).
           // then((response) => {
@@ -210,14 +217,17 @@ const Popup = ({
               body: `Reduce RS ${amount} to your account`,
             },
           };
-          // admin.messaging().send(payloadPurchase).
-          // then((response) => {
-          //   console.log("Successfully sent message:",
-          //       response);
-          //   // return {success: true};
-          // }).catch((error) => {
-          //   return {error: error.code};
-          // });
+
+           
+          const addMessage = httpsCallable(functions, 'sendNotificationPurchase', );
+          addMessage({ token: token, amount: amount }).then(result => {
+            console.log(result.data);
+          });
+
+          setMessage({ error: false, msg: 'New Transaction added successfully' });
+          handleClose();
+          navigate(`/customers`);
+     
         }
         
        
