@@ -7,6 +7,8 @@ import {
   updateDoc,
   deleteDoc,
   doc,
+  orderBy,
+  query,
 } from 'firebase/firestore';
 
 const transactionCollectionRef = collection(db, 'transactions');
@@ -37,7 +39,8 @@ class TransactionDataService {
     return updateDoc(customerDoc, updateBalance);
   };
   getAllTransactions = () => {
-    return getDocs(transactionCollectionRef);
+    return getDocs(query(transactionCollectionRef, orderBy('date','desc')));
+  
     };
     
     getTransaction = (id) => {

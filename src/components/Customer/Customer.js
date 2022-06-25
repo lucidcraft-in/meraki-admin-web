@@ -2,7 +2,7 @@
 import React, { useState,useEffect } from 'react';
 import { Button } from 'react-bootstrap';
 import { useParams, useNavigate } from 'react-router-dom';
- 
+
 
 import Popup from '../Common/Modal';
 import './Customer.css'
@@ -30,7 +30,7 @@ const Customer = () => {
    const [show, setShow] = useState(false);
    const [transactionType, setType] = useState(0);
 
-
+   const dateNow = new Date().toLocaleDateString('en-us', { weekday:"long", year:"numeric", month:"short", day:"numeric"}) 
   
 
   useEffect(() => {
@@ -203,7 +203,7 @@ const Customer = () => {
                   </div>
                   <div className="col-md-6 d-flex justify-content-start justify-content-md-end align-items-center">
                     <i className="material-icons me-2 text-lg">date_range</i>
-                    <small>23 - 30 March 2020</small>
+                    <small>{dateNow}</small>
                   </div>
                 </div>
               </div>
@@ -234,7 +234,9 @@ const Customer = () => {
                               <span className="text-xs">
                                 {new Date(
                                   doc.timestamp.seconds * 1000
-                                ).toLocaleDateString('en-US')}
+                                ).toLocaleDateString('en-GB', {
+                                  day: 'numeric', month: 'short', year: 'numeric'
+                                }).replace(/ /g, ' - ')}
                               </span>
                             </div>
                           </div>
