@@ -262,9 +262,11 @@ const Customer = () => {
                               {doc.note}
                             </h6>
                             <span className="text-xs">
-                              {new Date(
-                                doc.timestamp.seconds * 1000
-                              ).toLocaleDateString('en-US')}
+                            {new Date(
+                                  doc.timestamp.seconds * 1000
+                                ).toLocaleDateString('en-GB', {
+                                  day: 'numeric', month: 'short', year: 'numeric'
+                                }).replace(/ /g, ' - ')}
                               {/* {doc.date} */}
                             </span>
                           </div>
